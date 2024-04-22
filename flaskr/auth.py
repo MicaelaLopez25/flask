@@ -19,6 +19,7 @@ def register():
         db = get_db()
         error = None
 
+
         if not username:
             error = 'Se requiere nombre de usuario.'
         if not gmail:
@@ -96,3 +97,38 @@ def login_required(view):
         return view(**kwargs)
 
     return wrapped_view
+
+@bp.route('/actualizarGmail', methods=('POST', 'GET'))
+def actualizarGmail():
+   
+    if request.method == 'POST':
+        email = request.form['Nuevogmail']
+        error = None
+
+        if not email:
+            error = 'nuevo gmail es requerido.'
+
+        if error is not None:
+            flash(error)
+        else:
+            db = get_db()
+            db.execute(
+                'UPDATE user SET gmail = ?'
+                ' WHERE id = ?',
+                (email, g.user["id"],)
+            )
+            db.commit()
+            return redirect(url_for('index'))
+
+    return render_template('auth/actualizarGmail.html')
+
+@bp.route('/deleteUsuario', methods=('POST', 'GET'))
+def deleteUsuario():   
+    db = get_db()
+    db.execute(
+        'DELETE FROM user WHERE id = ?',
+        ( g.user["id"],)
+    )
+    db.commit()
+    session.clear()
+    return redirect(url_for('index'))

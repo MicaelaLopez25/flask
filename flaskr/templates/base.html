@@ -5,8 +5,10 @@
   <h1>Flaskr</h1>
   <ul>
     {% if g.user %}
-    <li><span>{{ g.user['username'] }} - {{ g.user['gmail'] }}</span></li>
-    <li><a href="{{ url_for('auth.logout') }}">Posteo</a> {% else %}</li>
+    <li class="alineado">{{ g.user['username'] }} - <a class="alineado" href="{{ url_for('auth.actualizarGmail') }}"> {{g.user['gmail']}} </a></li>
+
+    <li ><a href="{{ url_for('auth.logout') }}">cerrar sesion</a> </li>
+      {% else %}
 
     <li><a href="{{ url_for('auth.register') }}">Registro</a></li>
     <li>
